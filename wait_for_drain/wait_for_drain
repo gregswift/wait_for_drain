@@ -15,8 +15,8 @@ try:
 except ImportError:
     pass
 
-USAGE='{0} host:port [timeout in seconds, default 30]'.format(sys.argv[0])
 TIMEOUT=30
+USAGE='{0} host:port <timeout in seconds, default {1}> [comma separated lists of source hosts to ignore]'.format(sys.argv[0], TIMEOUT)
 
 def load_platform_subclass(cls, *args, **kwargs):
     '''
@@ -170,7 +170,7 @@ class LinuxTCPConnectionInfo(TCPConnectionInfo):
         if self.module.params['exclude_hosts'] is None:
             return []
         exclude_hosts = self.module.params['exclude_hosts'].split(',')
-        return [ _convert_host_to_hex(h) for h in exclude_hosts ]
+        return [ _convert_host_to_hex(h)[1] for h in exclude_hosts ]
 
     def get_active_connections_count(self):
         active_connections = 0
@@ -295,5 +295,9 @@ if __name__ == '__main__':
         exit_out('Timeout must be a number, in seconds', -2, True)
     except IndexError:
         timeout = TIMEOUT
-    count = wait_for_drain(host, port, timeout=timeout)
+    try:
+        excludes = sys.argv[3]
+    except IndexError:
+        excludes = None
+    count = wait_for_drain(host, port, excludes, timeout=timeout)
     exit_out("Found {0} connections to {1}:{2}".format(count, host, port), count)
