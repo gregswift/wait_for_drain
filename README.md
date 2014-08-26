@@ -2,7 +2,9 @@ wait_for_drain
 ===============
 
 Copyright © 2014 Greg Swift
+
 Written by: Greg Swift <greg.swift@nytefyre.net>
+
 License: General Public License (GPL) v3
 
 Description
@@ -23,13 +25,19 @@ Usage
 ===============
 
 * Check if all active connections on IPv4 port 80 are closed
-     # wait_for_drain 0.0.0.0:80
+```
+# wait_for_drain 0.0.0.0:80
+```
 
 * Check if all active connections on 24.24.24.24:443 are closed
-     # wait_for_drain 24.24.24.24:443 
+```
+# wait_for_drain 24.24.24.24:443 
+```
 
 * Check the last one, but give a timeout of 60s (default is 30s)
-     # wait_for_drain 24.24.24.24:443 60
+```
+# wait_for_drain 24.24.24.24:443 60
+```
 
 Known Issues
 ===============
